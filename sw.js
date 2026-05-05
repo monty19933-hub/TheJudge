@@ -39,7 +39,6 @@ const ASSETS = [
   "./assets/gear/hd/frostvein-gloves.png",
   "./assets/gear/hd/frostvein-helm.png",
   "./assets/gear/hd/frostvein-legs.png",
-  "./assets/gear/hd/gear-atlas-source.png",
   "./assets/gear/hd/moonlit-chest.png",
   "./assets/gear/hd/moonlit-gloves.png",
   "./assets/gear/hd/moonlit-helm.png",
