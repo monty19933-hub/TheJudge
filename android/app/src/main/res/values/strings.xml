@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Tribunal Inquisition</string>
+    <string name="title_activity_main">Tribunal Inquisition</string>
+    <string name="package_name">com.monty.nuggetrealms</string>
+    <string name="custom_url_scheme">com.monty.nuggetrealms</string>
+</resources>

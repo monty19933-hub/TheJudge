@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <radialGradient id="bg-empty-gloves-empty" cx="50%" cy="24%" r="72%">
+      <stop offset="0" stop-color="#5e625f" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#05070a"/>
+    </radialGradient>
+    <linearGradient id="armor-empty-gloves-empty" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4c5050"/>
+      <stop offset="0.48" stop-color="#1d2023"/>
+      <stop offset="1" stop-color="#07090b"/>
+    </linearGradient>
+    <filter id="shadow-empty-gloves-empty" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="5" stdDeviation="4" flood-color="#000" flood-opacity="0.55"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#d6c297" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect x="5" y="5" width="118" height="118" rx="18" fill="url(#bg-empty-gloves-empty)"/>
+  <circle cx="64" cy="64" r="49" fill="none" stroke="#8f8165" stroke-opacity="0.16" stroke-width="2"/>
+  <path d="M18 48 L42 28 L62 48 L52 88 L28 106 L12 80 L24 60 Z M66 48 L86 28 L110 48 L116 80 L100 106 L76 88 Z" fill="#181b1f" stroke="#b8ad94" stroke-opacity="0.22" stroke-width="2.5" filter="url(#shadow-empty-gloves-empty)"/>
+  <g fill="none" stroke="#fff2bd" stroke-width="3" stroke-linecap="round" stroke-opacity="0.22"><path d="M31 48 L51 75"/><path d="M97 48 L77 75"/><path d="M22 72 L53 72"/><path d="M75 72 L106 72"/></g>
+  <g transform="translate(10 6) scale(0.72)" fill="#d6c297" fill-opacity="0.13" stroke="#fff9d4" stroke-opacity="0.07150000000000001" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="motif" d="M27 26 C18 26 16 38 27 45 C39 38 38 27 27 26 Z"/><path class="motif-line" d="M22 42 C31 37 35 31 38 22"/></g>
+  <path d="M24 23 C42 12 81 10 103 30" fill="none" stroke="#fff" stroke-opacity="0.10" stroke-width="5" stroke-linecap="round"/>
+</svg>

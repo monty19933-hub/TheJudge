@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <radialGradient id="bg-emberglass-helm" cx="50%" cy="24%" r="72%">
+      <stop offset="0" stop-color="#ff963a" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#05070a"/>
+    </radialGradient>
+    <linearGradient id="armor-emberglass-helm" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe079"/>
+      <stop offset="0.48" stop-color="#cf7133"/>
+      <stop offset="1" stop-color="#5d2d22"/>
+    </linearGradient>
+    <filter id="shadow-emberglass-helm" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="5" stdDeviation="4" flood-color="#000" flood-opacity="0.55"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#ff963a" flood-opacity="0.72"/>
+    </filter>
+  </defs>
+  <rect x="5" y="5" width="118" height="118" rx="18" fill="url(#bg-emberglass-helm)"/>
+  <circle cx="64" cy="64" r="49" fill="none" stroke="#ff963a" stroke-opacity="0.24" stroke-width="2"/>
+  <path d="M42 74 L32 54 Q31 35 45 24 Q64 10 83 24 Q97 35 96 54 L86 74 L74 64 L64 76 L54 64 Z" fill="url(#armor-emberglass-helm)" stroke="#ffe079" stroke-opacity="0.72" stroke-width="2.5" filter="url(#shadow-emberglass-helm)"/>
+  <g fill="none" stroke="#fff2bd" stroke-width="3" stroke-linecap="round" stroke-opacity="0.56"><path d="M43 55 Q64 67 85 55"/><path d="M50 37 Q64 28 78 37"/><path d="M64 28 L64 75"/></g>
+  <g transform="translate(10 6) scale(0.72)" fill="#ff963a" fill-opacity="0.82" stroke="#fff9d4" stroke-opacity="0.451" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="motif" d="M28 48 C16 38 26 26 34 18 C32 29 48 31 38 50 C35 56 28 56 28 48 Z"/></g>
+  <path d="M24 23 C42 12 81 10 103 30" fill="none" stroke="#fff" stroke-opacity="0.22" stroke-width="5" stroke-linecap="round"/>
+</svg>

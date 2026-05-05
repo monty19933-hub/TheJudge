@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <radialGradient id="bg-moonlit-legs" cx="50%" cy="24%" r="72%">
+      <stop offset="0" stop-color="#c288ff" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#05070a"/>
+    </radialGradient>
+    <linearGradient id="armor-moonlit-legs" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#a7ffcf"/>
+      <stop offset="0.48" stop-color="#4c9b89"/>
+      <stop offset="1" stop-color="#243b4b"/>
+    </linearGradient>
+    <filter id="shadow-moonlit-legs" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="5" stdDeviation="4" flood-color="#000" flood-opacity="0.55"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#c288ff" flood-opacity="0.72"/>
+    </filter>
+  </defs>
+  <rect x="5" y="5" width="118" height="118" rx="18" fill="url(#bg-moonlit-legs)"/>
+  <circle cx="64" cy="64" r="49" fill="none" stroke="#c288ff" stroke-opacity="0.24" stroke-width="2"/>
+  <path d="M36 22 L92 22 L86 110 L69 110 L64 57 L59 110 L42 110 Z" fill="url(#armor-moonlit-legs)" stroke="#a7ffcf" stroke-opacity="0.72" stroke-width="2.5" filter="url(#shadow-moonlit-legs)"/>
+  <g fill="none" stroke="#fff2bd" stroke-width="3" stroke-linecap="round" stroke-opacity="0.56"><path d="M64 24 L64 103"/><path d="M45 46 L59 46"/><path d="M69 46 L83 46"/></g>
+  <g transform="translate(10 6) scale(0.72)" fill="#c288ff" fill-opacity="0.82" stroke="#fff9d4" stroke-opacity="0.451" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="motif" d="M40 22 C28 23 22 35 28 45 C20 42 16 32 20 24 C24 16 34 13 40 22 Z"/></g>
+  <path d="M24 23 C42 12 81 10 103 30" fill="none" stroke="#fff" stroke-opacity="0.22" stroke-width="5" stroke-linecap="round"/>
+</svg>

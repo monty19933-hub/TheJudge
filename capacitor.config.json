@@ -1,0 +1,8 @@
+{
+  "appId": "com.monty.nuggetrealms",
+  "appName": "Tribunal Inquisition",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  }
+}

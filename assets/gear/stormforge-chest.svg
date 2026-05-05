@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <radialGradient id="bg-stormforge-chest" cx="50%" cy="24%" r="72%">
+      <stop offset="0" stop-color="#82e8ff" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#05070a"/>
+    </radialGradient>
+    <linearGradient id="armor-stormforge-chest" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe66b"/>
+      <stop offset="0.48" stop-color="#8aa0b8"/>
+      <stop offset="1" stop-color="#3a4050"/>
+    </linearGradient>
+    <filter id="shadow-stormforge-chest" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="5" stdDeviation="4" flood-color="#000" flood-opacity="0.55"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#82e8ff" flood-opacity="0.72"/>
+    </filter>
+  </defs>
+  <rect x="5" y="5" width="118" height="118" rx="18" fill="url(#bg-stormforge-chest)"/>
+  <circle cx="64" cy="64" r="49" fill="none" stroke="#82e8ff" stroke-opacity="0.24" stroke-width="2"/>
+  <path d="M34 20 L48 32 L64 26 L80 32 L94 20 L108 42 L92 58 L86 108 L42 108 L36 58 L20 42 Z" fill="url(#armor-stormforge-chest)" stroke="#ffe66b" stroke-opacity="0.72" stroke-width="2.5" filter="url(#shadow-stormforge-chest)"/>
+  <g fill="none" stroke="#fff2bd" stroke-width="3" stroke-linecap="round" stroke-opacity="0.56"><path d="M64 28 L64 106"/><path d="M35 58 L93 58"/><path d="M45 34 Q64 47 83 34"/></g>
+  <g transform="translate(10 6) scale(0.72)" fill="#82e8ff" fill-opacity="0.82" stroke="#fff9d4" stroke-opacity="0.451" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="motif" d="M34 14 L20 42 L35 39 L27 58 L50 27 L34 30 Z"/></g>
+  <path d="M24 23 C42 12 81 10 103 30" fill="none" stroke="#fff" stroke-opacity="0.22" stroke-width="5" stroke-linecap="round"/>
+</svg>

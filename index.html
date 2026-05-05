@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#172033" />
+    <title>Tribunal Inquisition</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell" aria-label="Tribunal Inquisition clicker game">
+      <section class="level-panel" aria-label="Level selection">
+        <strong class="zone-title" id="zoneLevelLabel">Mossglow Grove</strong>
+        <div class="level-track" id="levelTrack"></div>
+      </section>
+
+      <section class="stage-band" id="stageBand">
+        <section class="hud-panel" aria-label="Currency and combat stats">
+          <div class="wallet-bar" aria-label="Currency">
+            <div class="currency" aria-label="Ether">
+              <span class="currency-icon gold"></span>
+              <span id="goldValue">0</span>
+            </div>
+            <div class="currency" aria-label="Diamonds">
+              <span class="currency-icon diamond"></span>
+              <span id="diamondValue">0</span>
+            </div>
+          </div>
+          <div class="stat-grid">
+            <div>
+              <span>Damage</span>
+              <strong id="tapDamageValue">1</strong>
+            </div>
+            <div>
+              <span>DPS</span>
+              <strong id="dpsValue">0</strong>
+            </div>
+          </div>
+        </section>
+        <div class="hud-hit-blocker" id="hudHitBlocker" aria-hidden="true"></div>
+        <div class="stage-status">
+          <h1 id="enemyName">Loading...</h1>
+        </div>
+        <section class="combat-panel" aria-label="Enemy health">
+          <div class="health-frame">
+            <div class="health-fill" id="healthFill"></div>
+            <span id="healthText">0 / 0</span>
+          </div>
+        </section>
+        <div class="stage-side-actions" aria-label="Stage shortcuts">
+          <button class="stage-icon-button options-toggle" id="optionsToggle" type="button" aria-label="Open options" aria-expanded="false" aria-controls="optionsDialog">
+            <span class="cog-icon" aria-hidden="true"></span>
+          </button>
+          <button class="stage-icon-button shop-toggle" id="shopToggle" type="button" aria-label="Open shop">
+            <span class="shop-toggle-icon" aria-hidden="true">
+              <span class="shop-sparkle shop-sparkle-a"></span>
+              <span class="shop-sparkle shop-sparkle-b"></span>
+              <span class="shop-sparkle shop-sparkle-c"></span>
+              <span class="shop-sparkle shop-sparkle-d"></span>
+              <span class="shop-sparkle shop-sparkle-e"></span>
+              <span class="shop-sparkle shop-sparkle-f"></span>
+            </span>
+          </button>
+        </div>
+        <div class="timer" id="bossTimer" hidden>30.0</div>
+        <div class="toast" id="toast" role="status" aria-live="polite"></div>
+        <canvas id="battleCanvas" width="720" height="720" aria-label="Battle scene"></canvas>
+        <div class="stage-bottom-tools">
+          <button class="cooldown-toggle judgment-cooldown" id="judgmentCooldown" type="button" aria-label="Hammer of Judgement cooldown">
+            <span class="cooldown-icon judgment-cooldown-icon" aria-hidden="true"></span>
+            <span class="cooldown-sweep" aria-hidden="true"></span>
+            <span class="cooldown-timer" id="judgmentCooldownTimer" aria-hidden="true"></span>
+          </button>
+          <button class="inventory-toggle" id="inventoryToggle" type="button" aria-label="Open inventory" aria-expanded="false" aria-controls="inventoryDialog">
+            <span class="inventory-toggle-icon" aria-hidden="true"></span>
+          </button>
+        </div>
+      </section>
+
+      <nav class="tab-bar" aria-label="Game panels">
+        <button class="tab-button" type="button" data-tab="upgrades">Upgrades</button>
+        <button class="tab-button" type="button" data-tab="buffs">Buffs</button>
+        <button class="tab-button" type="button" data-tab="reborn">Reborn</button>
+        <button class="tab-button" type="button" data-tab="relics">Boons</button>
+      </nav>
+
+      <section class="panel" id="upgradesPanel">
+        <div class="upgrade-list" id="upgradeList"></div>
+      </section>
+
+      <section class="panel" id="buffsPanel">
+        <div class="buff-list" id="buffList"></div>
+      </section>
+
+      <section class="panel" id="rebornPanel">
+        <div class="reborn-summary">
+          <span class="reborn-summary-label">Reborn Sparks</span>
+          <strong class="reborn-summary-value"><span class="currency-icon spark"></span><span id="rebornCurrencyValue">0</span></strong>
+        </div>
+        <button class="reborn-button" id="rebornButton" type="button" disabled title="Defeat your first boss to unlock Reborn.">Reborn</button>
+        <div class="reborn-list" id="rebornList"></div>
+      </section>
+
+      <section class="panel" id="relicsPanel">
+        <div class="relic-grid">
+          <button class="relic-card proof-card" type="button" data-relic="gildedLens">
+            <span class="ability-icon ability-icon-lens" aria-hidden="true"></span>
+            <span class="relic-card-body">
+              <strong>Gilded Lens</strong>
+              <span>Raises tap Ether crit chance</span>
+              <em data-relic-level>Lv 0/10</em>
+            </span>
+            <span class="buff-meta proof-meta">
+              <b class="relic-price" data-relic-cost><span class="currency-icon diamond"></span><span>6</span></b>
+            </span>
+          </button>
+          <button class="relic-card proof-card" type="button" data-relic="hammerReset">
+            <span class="ability-icon hammer-reset-icon" aria-hidden="true"></span>
+            <span class="relic-card-body">
+              <strong>Hammer Reset</strong>
+              <span>Refreshes Hammer of Judgement</span>
+              <em data-reset-status>Ready when cooling down</em>
+            </span>
+            <span class="buff-meta proof-meta">
+              <b class="relic-price" data-reset-cost><span class="currency-icon diamond"></span><span>5</span></b>
+            </span>
+          </button>
+        </div>
+      </section>
+
+    </main>
+
+    <div class="modal-backdrop" id="optionsBackdrop" hidden></div>
+    <section class="options-dialog" id="optionsDialog" role="dialog" aria-modal="true" aria-labelledby="optionsTitle" hidden>
+      <div class="dialog-header">
+        <h2 id="optionsTitle">Options</h2>
+        <button class="dialog-close" id="closeOptions" type="button" aria-label="Close options">x</button>
+      </div>
+      <label class="volume-control" for="sfxVolume">
+        <span>Sound Effects</span>
+        <input id="sfxVolume" type="range" min="0" max="100" step="1" />
+        <b id="sfxVolumeValue">75%</b>
+      </label>
+      <label class="volume-control" for="musicVolume">
+        <span>Background Music</span>
+        <input id="musicVolume" type="range" min="0" max="100" step="1" />
+        <b id="musicVolumeValue">35%</b>
+      </label>
+    </section>
+    <div class="modal-backdrop" id="shopBackdrop" hidden></div>
+    <section class="options-dialog shop-dialog" id="shopDialog" role="dialog" aria-modal="true" aria-labelledby="shopTitle" hidden>
+      <div class="dialog-header">
+        <h2 id="shopTitle">Shop</h2>
+        <button class="dialog-close" id="closeShop" type="button" aria-label="Close shop">x</button>
+      </div>
+      <div class="shop-copy">Test purchases grant diamonds locally. The billing hook is isolated for Google Play later.</div>
+      <button class="shop-row" type="button" data-sku="diamonds_small">
+        <span>Handful of diamonds</span>
+        <b>80</b>
+      </button>
+      <button class="shop-row" type="button" data-sku="diamonds_medium">
+        <span>Satchel of diamonds</span>
+        <b>500</b>
+      </button>
+      <button class="shop-row" type="button" data-sku="starter_bundle">
+        <span>Starter prospect kit</span>
+        <b>160 + boost</b>
+      </button>
+    </section>
+    <div class="modal-backdrop" id="rebornBackdrop" hidden></div>
+    <section class="options-dialog reborn-dialog" id="rebornDialog" role="dialog" aria-modal="true" aria-labelledby="rebornTitle" hidden>
+      <div class="dialog-header">
+        <h2 id="rebornTitle">Reborn?</h2>
+      </div>
+      <p class="reborn-warning">This will reset your run progress, normal upgrades, bosses, taps, Ether, and temporary boosts. Boons, diamonds, and reborn upgrades stay.</p>
+      <div class="reborn-payout">
+        <span>You will receive</span>
+        <strong><span class="currency-icon spark"></span><span id="rebornRewardValue">0 Reborn Sparks</span></strong>
+      </div>
+      <div class="reborn-actions">
+        <button class="reborn-confirm" id="confirmReborn" type="button">Sure!</button>
+        <button class="reborn-cancel" id="cancelReborn" type="button">Nevermind</button>
+      </div>
+    </section>
+    <div class="modal-backdrop" id="inventoryBackdrop" hidden></div>
+    <section class="options-dialog inventory-dialog" id="inventoryDialog" role="dialog" aria-modal="true" aria-labelledby="inventoryTitle" hidden>
+      <div class="dialog-header">
+        <h2 id="inventoryTitle">Inventory</h2>
+        <div class="inventory-tabs" role="tablist" aria-label="Inventory views">
+          <button class="inventory-tab active" id="gearInventoryTab" type="button" data-inventory-view="gear" role="tab" aria-selected="true">Gear</button>
+          <button class="inventory-tab" id="resourcesInventoryTab" type="button" data-inventory-view="resources" role="tab" aria-selected="false">Resources</button>
+        </div>
+        <button class="dialog-close" id="closeInventory" type="button" aria-label="Close inventory">x</button>
+      </div>
+      <section class="inventory-view active" id="gearInventoryView" data-inventory-panel="gear">
+        <div class="equipment-grid" id="equipmentGrid" aria-label="Equipped gear"></div>
+        <div class="inventory-action-bar">
+          <button class="mass-disenchant-open" id="openMassDisenchant" type="button">Mass Disenchant</button>
+        </div>
+        <div class="gear-slot-tabs" id="gearSlotTabs" role="tablist" aria-label="Gear inventory types">
+          <button class="gear-slot-tab active" type="button" data-gear-slot-view="helm" role="tab" aria-selected="true">Helms</button>
+          <button class="gear-slot-tab" type="button" data-gear-slot-view="chest" role="tab" aria-selected="false">Chestplates</button>
+          <button class="gear-slot-tab" type="button" data-gear-slot-view="legs" role="tab" aria-selected="false">Leggings</button>
+          <button class="gear-slot-tab" type="button" data-gear-slot-view="gloves" role="tab" aria-selected="false">Gloves</button>
+        </div>
+        <div class="inventory-grid" id="inventoryGrid" aria-label="Inventory slots"></div>
+      </section>
+      <section class="inventory-view resources-view" id="resourcesInventoryView" data-inventory-panel="resources" hidden>
+        <div class="resources-grid" id="resourcesGrid" aria-label="Crafting resources"></div>
+      </section>
+    </section>
+    <div class="modal-backdrop full-bag-backdrop" id="fullBagBackdrop" hidden></div>
+    <section class="options-dialog full-bag-dialog" id="fullBagDialog" role="dialog" aria-modal="true" aria-labelledby="fullBagTitle" hidden>
+      <div class="dialog-header">
+        <h2 id="fullBagTitle">Bags Full</h2>
+      </div>
+      <div class="full-bag-item">
+        <span class="item-detail-icon" id="fullBagItemIcon" aria-hidden="true"></span>
+        <div>
+          <strong id="fullBagItemName">Item Name</strong>
+          <span id="fullBagItemQuality">Rare Gear</span>
+          <small id="fullBagItemStats">+0 tap damage</small>
+        </div>
+      </div>
+      <p class="full-bag-copy">Your bags are full. Disenchant this drop into dust now, or review it in the inventory.</p>
+      <div class="item-detail-actions">
+        <button class="item-destroy-button" id="destroyOverflowItem" type="button">Disenchant</button>
+        <button class="item-equip-button" id="keepOverflowItem" type="button">Keep the Item</button>
+      </div>
+    </section>
+    <div class="modal-backdrop mass-disenchant-backdrop" id="massDisenchantBackdrop" hidden></div>
+    <section class="options-dialog mass-disenchant-dialog" id="massDisenchantDialog" role="dialog" aria-modal="true" aria-labelledby="massDisenchantTitle" hidden>
+      <div class="dialog-header">
+        <h2 id="massDisenchantTitle">Mass Disenchant</h2>
+      </div>
+      <p class="mass-disenchant-copy">Choose which item qualities to turn into dust. Equipped gear will not be touched.</p>
+      <div class="mass-disenchant-options" id="massDisenchantQualityList"></div>
+      <div class="item-detail-actions">
+        <button class="item-destroy-button" id="confirmMassDisenchantSelection" type="button">Mass Disenchant</button>
+        <button class="item-cancel-button" id="cancelMassDisenchant" type="button">Nevermind</button>
+      </div>
+    </section>
+    <section class="options-dialog mass-disenchant-dialog" id="massDisenchantConfirmDialog" role="dialog" aria-modal="true" aria-labelledby="massDisenchantConfirmTitle" hidden>
+      <div class="dialog-header">
+        <h2 id="massDisenchantConfirmTitle">Are You Sure?</h2>
+      </div>
+      <p class="mass-disenchant-copy" id="massDisenchantConfirmText">Do you want to disenchant these items?</p>
+      <div class="item-detail-actions">
+        <button class="item-destroy-button" id="performMassDisenchant" type="button">Yes</button>
+        <button class="item-cancel-button" id="cancelMassDisenchantConfirm" type="button">Nevermind</button>
+      </div>
+    </section>
+    <div class="modal-backdrop item-detail-backdrop" id="itemDetailBackdrop" hidden></div>
+    <section class="options-dialog item-detail-dialog" id="itemDetailDialog" role="dialog" aria-modal="true" aria-label="Item details" hidden>
+      <div class="item-detail-body">
+        <span class="item-detail-icon" id="itemDetailIcon" aria-hidden="true"></span>
+        <div class="item-detail-info">
+          <strong id="itemDetailName">Item Name</strong>
+          <span class="item-detail-quality" id="itemDetailQuality">Uncommon Armor</span>
+          <span class="item-detail-slot" id="itemDetailSlot">Chest</span>
+          <span class="item-detail-divider" aria-hidden="true"></span>
+          <p id="itemDetailStats">+0 tap damage</p>
+          <small id="itemDetailFlavor">A sturdy piece of adventuring gear.</small>
+        </div>
+      </div>
+      <div class="item-detail-actions">
+        <button class="item-equip-button" id="equipItemButton" type="button">Equip</button>
+        <button class="item-destroy-button" id="dustItemButton" type="button">Disenchant</button>
+        <button class="item-cancel-button" id="cancelItemDetail" type="button">Nevermind</button>
+      </div>
+    </section>
+    <div class="item-tooltip" id="itemTooltip" hidden></div>
+    <audio id="bgMusic" preload="auto" loop></audio>
+    <script src="src/game.js" type="module"></script>
+  </body>
+</html>
