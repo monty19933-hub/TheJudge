@@ -1,6 +1,6 @@
-# Tribunal Inquisition
+# The Judge
 
-Tribunal Inquisition is a mobile-first idle clicker prototype inspired by the broad progression formula of classic browser clickers, with original naming, currencies, creatures, environments, and generated canvas art.
+The Judge is a mobile-first idle clicker prototype inspired by the broad progression formula of classic browser clickers, with original naming, currencies, creatures, environments, and generated canvas art.
 
 ## Play locally
 
