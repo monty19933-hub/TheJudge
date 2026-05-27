@@ -23,6 +23,8 @@ Then visit `http://localhost:5173`.
 - Every tenth encounter is a timed boss.
 - Defeating a boss advances to the next realm and swaps the environment and creature set.
 - Bosses have a low diamond drop chance that rises with boss kills, and higher boss counts can award more diamonds.
+- Bosses from level 60 onward award Scrolls that open daily Mega Boss attempts.
+- Mega Bosses are longer challenge fights with guaranteed gear and large Ether rewards.
 - Diamonds are the premium currency.
 - Relics spend diamonds on temporary boosts.
 - Shop purchases are mocked locally, while the `window.AndroidBilling.purchaseSku(sku)` hook is ready for a native Android billing bridge.

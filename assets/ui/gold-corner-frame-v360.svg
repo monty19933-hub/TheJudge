@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 72 72">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff1a6"/>
+      <stop offset="0.2" stop-color="#ffc95a"/>
+      <stop offset="0.55" stop-color="#b96809"/>
+      <stop offset="0.78" stop-color="#f1a722"/>
+      <stop offset="1" stop-color="#fff5ae"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffe68e"/>
+      <stop offset="0.48" stop-color="#d8840e"/>
+      <stop offset="1" stop-color="#fff0a4"/>
+    </linearGradient>
+  </defs>
+  <rect width="72" height="72" fill="none"/>
+  <path d="M16 9h40M16 63h40M9 16v40M63 16v40" fill="none" stroke="#4b2204" stroke-width="7" stroke-linecap="square" opacity=".72"/>
+  <path d="M16 9h40M16 63h40M9 16v40M63 16v40" fill="none" stroke="url(#edge)" stroke-width="4.5" stroke-linecap="square"/>
+  <path d="M17 12h38M17 60h38M12 17v38M60 17v38" fill="none" stroke="#fff4bd" stroke-width="1.25" stroke-linecap="square" opacity=".72"/>
+  <path d="M5 5h20v8H13v12H5Z M67 5v20h-8V13H47V5Z M5 67V47h8v12h12v8Z M67 67H47v-8h12V47h8Z" fill="#4b2204" opacity=".82"/>
+  <path d="M6 6h18v7H13v11H6Z M66 6v18h-7V13H48V6Z M6 66V48h7v11h11v7Z M66 66H48v-7h11V48h7Z" fill="url(#gold)"/>
+  <path d="M9 9h10M9 9v10M63 9H53M63 9v10M9 63V53M9 63h10M63 63H53M63 63V53" fill="none" stroke="#fff5bb" stroke-width="1.6" stroke-linecap="square" opacity=".86"/>
+</svg>

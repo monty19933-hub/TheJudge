@@ -1,15 +1,62 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="app-loading splash-studio">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
     <meta name="theme-color" content="#172033" />
-    <title>Tribunal Inquisition</title>
+    <title>The Judge</title>
+    <style>
+      html.app-loading,
+      html.app-loading body {
+        background: #111820;
+      }
+
+      html.app-loading .app-shell {
+        opacity: 0;
+      }
+
+      html.app-loading .startup-splash {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: block;
+        background: #05070d;
+      }
+    </style>
+    <script>
+      window.__judgeSplashStartedAt = performance.now();
+      window.__judgeSplashPhaseTimer = window.setTimeout(() => {
+        document.documentElement.classList.remove("splash-studio");
+        document.documentElement.classList.add("splash-game");
+      }, 2400);
+      window.setTimeout(() => document.documentElement.classList.remove("app-loading", "splash-studio", "splash-game"), 10000);
+    </script>
     <link rel="manifest" href="manifest.webmanifest" />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="preload" href="assets/splash/teriyaki-labs-splash-v409.png" as="image" />
+    <link rel="preload" href="assets/splash/the-judge-loading-bg-v409.png" as="image" />
+    <link rel="preload" href="assets/splash/the-judge-logo-v409.png" as="image" />
+    <link rel="preload" href="assets/art/realm-background-atlas.png" as="image" />
+    <link rel="preload" href="assets/art/enemy-encounter-mossglow-hd.png?v=241" as="image" />
+    <link rel="preload" href="assets/art/enemy-encounter-emberglass-hd.png?v=241" as="image" />
+    <link rel="preload" href="assets/art/enemy-encounter-frostvein-hd.png?v=241" as="image" />
+    <link rel="preload" href="assets/art/enemy-encounter-moonlit-hd.png?v=241" as="image" />
+    <link rel="preload" href="assets/art/enemy-encounter-stormforge-hd.png?v=241" as="image" />
+    <link rel="preload" href="assets/art/enemy-encounter-starfall-hd.png?v=241" as="image" />
+    <link rel="stylesheet" href="styles.css?v=444" />
   </head>
   <body>
-    <main class="app-shell" aria-label="Tribunal Inquisition clicker game">
+    <section class="startup-splash" id="startupSplash" aria-label="Loading The Judge">
+      <div class="startup-splash-stage startup-studio-stage" aria-hidden="true">
+        <img class="startup-studio-art" src="assets/splash/teriyaki-labs-splash-v409.png" alt="" />
+      </div>
+      <div class="startup-splash-stage startup-game-stage" aria-hidden="true">
+        <img class="startup-game-logo" src="assets/splash/the-judge-logo-v409.png" alt="" />
+        <div class="startup-loading-track">
+          <span class="startup-loading-fill"></span>
+        </div>
+      </div>
+    </section>
+    <main class="app-shell" aria-label="The Judge clicker game">
       <section class="level-panel" aria-label="Level selection">
         <strong class="zone-title" id="zoneLevelLabel">Mossglow Grove</strong>
         <div class="level-track" id="levelTrack"></div>
@@ -22,6 +69,10 @@
               <span class="currency-icon gold"></span>
               <span id="goldValue">0</span>
             </div>
+            <div class="currency spark-wallet" aria-label="Reborn Sparks">
+              <span class="currency-icon spark"></span>
+              <span id="rebornWalletValue">0</span>
+            </div>
             <div class="currency" aria-label="Diamonds">
               <span class="currency-icon diamond"></span>
               <span id="diamondValue">0</span>
@@ -30,11 +81,11 @@
           <div class="stat-grid">
             <div>
               <span>Damage</span>
-              <strong id="tapDamageValue">1</strong>
+              <strong id="tapDamageValue">5</strong>
             </div>
             <div>
               <span>DPS</span>
-              <strong id="dpsValue">0</strong>
+              <strong id="dpsValue">10</strong>
             </div>
           </div>
         </section>
@@ -49,8 +100,19 @@
           </div>
         </section>
         <div class="stage-side-actions" aria-label="Stage shortcuts">
-          <button class="stage-icon-button options-toggle" id="optionsToggle" type="button" aria-label="Open options" aria-expanded="false" aria-controls="optionsDialog">
-            <span class="cog-icon" aria-hidden="true"></span>
+          <div class="stage-icon-stack">
+            <button class="stage-icon-button dev-toggle" id="devToggle" type="button" aria-label="Open developer tools" aria-expanded="false" aria-controls="devDialog">
+              <span class="dev-toggle-icon" aria-hidden="true">Dev</span>
+            </button>
+            <button class="stage-icon-button options-toggle" id="optionsToggle" type="button" aria-label="Open options" aria-expanded="false" aria-controls="optionsDialog">
+              <span class="cog-icon" aria-hidden="true"></span>
+            </button>
+          </div>
+          <button class="stage-icon-button achievements-toggle" id="achievementsToggle" type="button" aria-label="Open achievements" aria-expanded="false" aria-controls="achievementsDialog">
+            <span class="achievements-toggle-icon" aria-hidden="true"></span>
+          </button>
+          <button class="stage-icon-button dailies-toggle" id="dailiesToggle" type="button" aria-label="Open daily quests" aria-expanded="false" aria-controls="dailiesDialog">
+            <span class="dailies-toggle-icon" aria-hidden="true"></span>
           </button>
           <button class="stage-icon-button shop-toggle" id="shopToggle" type="button" aria-label="Open shop">
             <span class="shop-toggle-icon" aria-hidden="true">
@@ -62,19 +124,34 @@
               <span class="shop-sparkle shop-sparkle-f"></span>
             </span>
           </button>
+          <button class="stage-icon-button mega-boss-toggle" id="megaBossToggle" type="button" aria-label="Open mega bosses" aria-expanded="false" aria-controls="megaBossDialog">
+            <span class="mega-boss-toggle-icon" aria-hidden="true"></span>
+          </button>
         </div>
         <div class="timer" id="bossTimer" hidden>30.0</div>
+        <button class="puzzle-vault-flee-button" id="puzzleVaultFlee" type="button" hidden>Exit</button>
         <div class="toast" id="toast" role="status" aria-live="polite"></div>
+        <button class="puzzle-portal-button" id="puzzlePortalButton" type="button" aria-label="Enter the Puzzle Vault" hidden>
+          <span class="puzzle-portal-core" aria-hidden="true"></span>
+          <span class="puzzle-portal-flow puzzle-portal-ether" aria-hidden="true"></span>
+          <span class="puzzle-portal-flow puzzle-portal-gem" aria-hidden="true"></span>
+          <span class="puzzle-portal-flow puzzle-portal-dust" aria-hidden="true"></span>
+          <span class="puzzle-portal-flow puzzle-portal-diamond" aria-hidden="true"></span>
+        </button>
+        <div class="dps-guide-callout goblin-portal-guide-callout" id="goblinPortalGuideCallout" role="note" hidden>
+          <button class="guide-callout-close" type="button" data-guide-dismiss aria-label="Dismiss guide">x</button>
+          <p id="goblinPortalGuideText">Click the portal to explore the Goblin Vaults! This is a timed event, and another portal cannot be opened until this one is complete. The portal stays at the level it opened at, so entering right away is the best option so you do not miss future loot!</p>
+        </div>
         <canvas id="battleCanvas" width="720" height="720" aria-label="Battle scene"></canvas>
         <div class="stage-bottom-tools">
-          <button class="cooldown-toggle judgment-cooldown" id="judgmentCooldown" type="button" aria-label="Hammer of Judgement cooldown">
-            <span class="cooldown-icon judgment-cooldown-icon" aria-hidden="true"></span>
-            <span class="cooldown-sweep" aria-hidden="true"></span>
-            <span class="cooldown-timer" id="judgmentCooldownTimer" aria-hidden="true"></span>
-          </button>
-          <button class="inventory-toggle" id="inventoryToggle" type="button" aria-label="Open inventory" aria-expanded="false" aria-controls="inventoryDialog">
-            <span class="inventory-toggle-icon" aria-hidden="true"></span>
-          </button>
+          <div class="stage-tool-row">
+            <button class="cooldown-toggle judgment-cooldown" id="judgmentCooldown" type="button" aria-label="Hammer of Judgement cooldown">
+              <span class="cooldown-icon judgment-cooldown-icon" aria-hidden="true"></span>
+              <span class="cooldown-sweep" aria-hidden="true"></span>
+              <span class="cooldown-timer" id="judgmentCooldownTimer" aria-hidden="true"></span>
+            </button>
+            <div class="active-buff-strip" id="activeBuffStrip" aria-label="Active buffs"></div>
+          </div>
         </div>
       </section>
 
@@ -84,48 +161,110 @@
         <button class="tab-button" type="button" data-tab="reborn">Reborn</button>
         <button class="tab-button" type="button" data-tab="relics">Boons</button>
       </nav>
+      <div class="dps-guide-callout" id="dpsGuideCallout" role="note" hidden>
+        <button class="guide-callout-close" type="button" data-guide-dismiss aria-label="Dismiss guide">x</button>
+        <p id="dpsGuideText">Click upgrades to be able to increase your DPS!</p>
+      </div>
+      <div class="dps-guide-callout achievement-guide-callout" id="achievementGuideCallout" role="note" hidden>
+        <button class="guide-callout-close" type="button" data-guide-dismiss aria-label="Dismiss guide">x</button>
+        <p id="achievementGuideText">Achievement complete! Open this icon to view achievements and overall game statistics.</p>
+      </div>
+      <div class="dps-guide-callout achievement-guide-callout" id="achievementMilestoneGuideCallout" role="note" hidden>
+        <button class="guide-callout-close" type="button" data-guide-dismiss aria-label="Dismiss guide">x</button>
+        <p id="achievementMilestoneGuideText">Click here to see milestones.</p>
+      </div>
+      <div class="dps-guide-callout achievement-guide-callout achievement-tier-guide-callout" id="achievementFreeTierGuideCallout" role="note" hidden>
+        <button class="guide-callout-close" type="button" data-guide-dismiss aria-label="Dismiss guide">x</button>
+        <p id="achievementFreeTierGuideText">The Free Tier gives milestone rewards as your achievement points climb.</p>
+      </div>
+      <div class="dps-guide-callout achievement-guide-callout achievement-tier-guide-callout" id="achievementDiamondTierGuideCallout" role="note" hidden>
+        <button class="guide-callout-close" type="button" data-guide-dismiss aria-label="Dismiss guide">x</button>
+        <p id="achievementDiamondTierGuideText">The Diamond Tier adds extra rewards. You can earn gems from achievements, daily and weekly quests, first boss clears, Goblin Vault loot, Mega Boss rewards, and shop packs.</p>
+      </div>
+      <div class="dps-guide-callout daily-guide-callout" id="dailyGuideCallout" role="note" hidden>
+        <button class="guide-callout-close" type="button" data-guide-dismiss aria-label="Dismiss guide">x</button>
+        <p id="dailyGuideText">Daily complete! Open this icon to view daily quests and weekly rewards.</p>
+      </div>
+      <div class="dps-guide-callout daily-guide-callout" id="dailyWindowGuideCallout" role="note" hidden>
+        <button class="guide-callout-close" type="button" data-guide-dismiss aria-label="Dismiss guide">x</button>
+        <p id="dailyWindowGuideText">Dailies reset every day. Complete and claim them daily to fill the weekly counter and unlock the weekly reward!</p>
+      </div>
+      <div class="dps-guide-callout judgment-guide-callout" id="judgmentGuideCallout" role="note" hidden>
+        <button class="guide-callout-close" type="button" data-guide-dismiss aria-label="Dismiss guide">x</button>
+        <p id="judgmentGuideText">You can use Hammer of Judgement to clear an entire level.</p>
+      </div>
+      <div class="dps-guide-callout level60-guide-callout" id="level60RebornGuideCallout" role="note" hidden>
+        <button class="guide-callout-close" type="button" data-guide-dismiss aria-label="Dismiss guide">x</button>
+        <p id="level60RebornGuideText">Level 60 complete! You can Reborn to progress even further into the game. Reborn upgrades are permanent.</p>
+      </div>
+      <div class="dps-guide-callout level60-guide-callout" id="level60MegaBossGuideCallout" role="note" hidden>
+        <button class="guide-callout-close" type="button" data-guide-dismiss aria-label="Dismiss guide">x</button>
+        <p id="level60MegaBossGuideText">Mega Bosses are now unlocked. Use this icon to challenge them with boss scrolls and chase bigger rewards.</p>
+      </div>
 
       <section class="panel" id="upgradesPanel">
+        <div class="panel-title">
+          <h2>Upgrades</h2>
+        </div>
         <div class="upgrade-list" id="upgradeList"></div>
       </section>
 
       <section class="panel" id="buffsPanel">
+        <div class="panel-title">
+          <h2>Buffs</h2>
+        </div>
         <div class="buff-list" id="buffList"></div>
       </section>
 
       <section class="panel" id="rebornPanel">
+        <div class="panel-title">
+          <h2>Reborn</h2>
+        </div>
         <div class="reborn-summary">
           <span class="reborn-summary-label">Reborn Sparks</span>
           <strong class="reborn-summary-value"><span class="currency-icon spark"></span><span id="rebornCurrencyValue">0</span></strong>
+          <small class="reborn-formula" id="rebornFormula">Next Reborn: 0 sparks</small>
         </div>
         <button class="reborn-button" id="rebornButton" type="button" disabled title="Defeat your first boss to unlock Reborn.">Reborn</button>
         <div class="reborn-list" id="rebornList"></div>
       </section>
 
       <section class="panel" id="relicsPanel">
-        <div class="relic-grid">
-          <button class="relic-card proof-card" type="button" data-relic="gildedLens">
-            <span class="ability-icon ability-icon-lens" aria-hidden="true"></span>
-            <span class="relic-card-body">
-              <strong>Gilded Lens</strong>
-              <span>Raises tap Ether crit chance</span>
-              <em data-relic-level>Lv 0/10</em>
-            </span>
-            <span class="buff-meta proof-meta">
-              <b class="relic-price" data-relic-cost><span class="currency-icon diamond"></span><span>6</span></b>
-            </span>
-          </button>
-          <button class="relic-card proof-card" type="button" data-relic="hammerReset">
-            <span class="ability-icon hammer-reset-icon" aria-hidden="true"></span>
-            <span class="relic-card-body">
-              <strong>Hammer Reset</strong>
-              <span>Refreshes Hammer of Judgement</span>
-              <em data-reset-status>Ready when cooling down</em>
-            </span>
-            <span class="buff-meta proof-meta">
-              <b class="relic-price" data-reset-cost><span class="currency-icon diamond"></span><span>5</span></b>
-            </span>
-          </button>
+        <div class="panel-title">
+          <h2>Boons</h2>
+        </div>
+        <div class="panel-category">
+          <div class="upgrade-list" id="boonList"></div>
+        </div>
+        <div class="panel-category">
+          <h3>Super Boons</h3>
+          <div class="relic-grid">
+            <button class="relic-card proof-card" type="button" data-relic="gildedLens">
+              <span class="ability-icon ability-icon-lens" aria-hidden="true"></span>
+              <span class="relic-card-body">
+                <strong>Gilded Monocle</strong>
+                <span>Raises tap Ether crit chance</span>
+                <small class="effect-line" data-relic-effect>+5% per level, max +100%</small>
+                <em data-relic-level>Lv 0/20</em>
+              </span>
+              <span class="buff-meta proof-meta">
+                <b class="relic-price" data-relic-cost><span class="currency-icon diamond"></span><span>50</span></b>
+              </span>
+            </button>
+            <button class="relic-card proof-card" type="button" data-relic="hammerReset">
+              <span class="ability-icon hammer-reset-icon" aria-hidden="true"></span>
+              <span class="relic-card-body">
+                <strong>Executioner</strong>
+                <span>Refreshes Hammer of Judgement</span>
+                <small class="effect-line">Resets the 15m Hammer cooldown</small>
+                <small class="effect-line" data-reset-limit>Daily uses: 0/3</small>
+                <em data-reset-status>Ready when cooling down</em>
+              </span>
+              <span class="buff-meta proof-meta">
+                <b class="relic-price" data-reset-cost><span class="currency-icon diamond"></span><span>100</span></b>
+              </span>
+            </button>
+          </div>
         </div>
       </section>
 
@@ -134,39 +273,483 @@
     <div class="modal-backdrop" id="optionsBackdrop" hidden></div>
     <section class="options-dialog" id="optionsDialog" role="dialog" aria-modal="true" aria-labelledby="optionsTitle" hidden>
       <div class="dialog-header">
+        <button class="options-avatar-button" id="optionsAvatarButton" type="button" aria-label="Open avatar selector" aria-controls="profileDialog">
+          <img id="optionsAvatarImage" src="assets/icons/hammers-wrath-icon.png" alt="" />
+        </button>
         <h2 id="optionsTitle">Options</h2>
         <button class="dialog-close" id="closeOptions" type="button" aria-label="Close options">x</button>
       </div>
-      <label class="volume-control" for="sfxVolume">
-        <span>Sound Effects</span>
-        <input id="sfxVolume" type="range" min="0" max="100" step="1" />
-        <b id="sfxVolumeValue">75%</b>
-      </label>
-      <label class="volume-control" for="musicVolume">
-        <span>Background Music</span>
-        <input id="musicVolume" type="range" min="0" max="100" step="1" />
-        <b id="musicVolumeValue">35%</b>
-      </label>
+      <div class="options-tabs" role="tablist" aria-label="Options sections">
+        <button class="options-tab active" type="button" data-options-tab="audio" role="tab" aria-selected="true">Audio</button>
+        <button class="options-tab" type="button" data-options-tab="dropRates" role="tab" aria-selected="false">Drop Rates</button>
+      </div>
+      <div class="options-pane active" data-options-pane="audio">
+        <label class="volume-control" for="sfxVolume">
+          <span>Sound Effects</span>
+          <input id="sfxVolume" type="range" min="0" max="100" step="1" />
+          <b id="sfxVolumeValue">75%</b>
+        </label>
+        <label class="volume-control" for="musicVolume">
+          <span>Background Music</span>
+          <input id="musicVolume" type="range" min="0" max="100" step="1" />
+          <b id="musicVolumeValue">35%</b>
+        </label>
+      </div>
+      <div class="options-pane drop-rates-pane" data-options-pane="dropRates" hidden>
+        <section class="drop-rate-section">
+          <h3>Normal Creatures</h3>
+          <div class="drop-rate-card">
+            <strong>Dust Drop</strong>
+            <span>20% chance per kill. Only one dust type can drop.</span>
+            <ul class="drop-rate-list">
+              <li><b>Common Dust</b><span>50% | 10-20</span></li>
+              <li><b>Rare Dust</b><span>35% | 6-10</span></li>
+              <li><b>Epic Dust</b><span>10% | 3-6</span></li>
+              <li><b>Legendary Dust</b><span>4.5% | 1-2</span></li>
+              <li><b>Mythic Dust</b><span>0.5% | 1</span></li>
+            </ul>
+          </div>
+          <div class="drop-rate-card">
+            <strong>Zone Item</strong>
+            <span>20% chance per kill | 1 level-specific resource</span>
+          </div>
+        </section>
+
+        <section class="drop-rate-section">
+          <h3>Normal Bosses</h3>
+          <div class="drop-rate-card">
+            <strong>Guaranteed Drops</strong>
+            <ul class="drop-rate-list">
+              <li><b>Boss Soul</b><span>100% | 1</span></li>
+              <li><b>First-Kill Diamonds</b><span>25 once per boss level</span></li>
+            </ul>
+          </div>
+          <div class="drop-rate-card">
+            <strong>Goblin Vault Portal</strong>
+            <span>2% base chance per boss. Shiny Attractions multiplies this by 10% per upgrade.</span>
+          </div>
+          <div class="drop-rate-card">
+            <strong>Dust Drop</strong>
+            <span>60% chance per boss. Only one dust type can drop.</span>
+            <ul class="drop-rate-list">
+              <li><b>Common Dust</b><span>30% | 30-60</span></li>
+              <li><b>Rare Dust</b><span>40% | 15-30</span></li>
+              <li><b>Epic Dust</b><span>20% | 8-12</span></li>
+              <li><b>Legendary Dust</b><span>1% | 3-5</span></li>
+              <li><b>Mythic Dust</b><span>1% | 1</span></li>
+            </ul>
+          </div>
+          <div class="drop-rate-card">
+            <strong>Zone Item</strong>
+            <span>40% chance per boss | 1-3 level-specific resources</span>
+          </div>
+        </section>
+
+        <section class="drop-rate-section">
+          <h3>Goblin Vault</h3>
+          <div class="drop-rate-card">
+            <strong>Goblin Spawns</strong>
+            <ul class="drop-rate-list">
+              <li><b>Ether Goblin</b><span>58%</span></li>
+              <li><b>Dust Goblin</b><span>24%</span></li>
+              <li><b>Gem Goblin</b><span>11%</span></li>
+              <li><b>Cosmic Goblin</b><span>5%</span></li>
+              <li><b>Diamond Goblin</b><span>2%</span></li>
+            </ul>
+          </div>
+          <div class="drop-rate-card">
+            <strong>Goblin Loot</strong>
+            <ul class="drop-rate-list">
+              <li><b>Ether Goblin</b><span>100% | 1K Ether base, +125% per boss tier (x2.25)</span></li>
+              <li><b>Dust Goblin</b><span>Common 60%, Rare 40%, Epic 30%, Legendary 10%, Mythic 2%</span></li>
+              <li><b>Gem Goblin</b><span>50% per gem type | 1-2 each, at least one type</span></li>
+              <li><b>Diamond Goblin</b><span>100% | 3 Diamonds base</span></li>
+              <li><b>Cosmic Goblin</b><span>One drop: Ether 60, Dust 40, Gems 25, Diamonds 5 weighted</span></li>
+              <li><b>Goblin Essence</b><span>50% per vault enemy | 1-25 unscaled</span></li>
+              <li><b>Goblin King</b><span>2K Ether base, +125% per boss tier (x2.25); random gems and dust guaranteed; Diamonds 10%; Puzzle Ring Fragment 3%</span></li>
+            </ul>
+          </div>
+          <p class="drop-rate-note">Goblin Vault portals are one 5-minute run with 10 goblins and the Goblin King. Amounts scale from the normal boss level that opened the portal, then stay fixed for that portal.</p>
+        </section>
+      </div>
+    </section>
+    <div class="modal-backdrop profile-backdrop" id="profileBackdrop" hidden></div>
+    <section class="options-dialog profile-dialog" id="profileDialog" role="dialog" aria-modal="true" aria-labelledby="profileTitle" hidden>
+      <div class="dialog-header">
+        <h2 id="profileTitle">Profile</h2>
+        <button class="dialog-close" id="closeProfile" type="button" aria-label="Close profile">x</button>
+      </div>
+      <p class="profile-question">Would you like to choose a name and avatar, or sign in with Google?</p>
+      <div class="profile-mode-tabs" role="tablist" aria-label="Profile choices">
+        <button class="profile-mode-button active" type="button" data-profile-mode="local" role="tab" aria-selected="true">Name & Avatar</button>
+        <button class="profile-mode-button" type="button" data-profile-mode="google" role="tab" aria-selected="false">Google</button>
+      </div>
+      <p class="profile-google-note">Sign in with Google to save your progress.</p>
+      <div class="profile-panel active" data-profile-panel="local">
+        <label class="profile-name-field" for="profileNameInput">
+          <span>Judge Name</span>
+          <input id="profileNameInput" type="text" maxlength="20" autocomplete="nickname" placeholder="The Judge" />
+        </label>
+        <div class="profile-avatar-grid" id="profileAvatarGrid" aria-label="Avatar choices"></div>
+        <button class="profile-save-button" id="profileSaveButton" type="button">Save Profile</button>
+      </div>
+      <div class="profile-panel profile-google-panel" data-profile-panel="google" hidden>
+        <div class="profile-google-card">
+          <strong>Google save</strong>
+          <span>Use Google sign in so your progress can be saved and restored.</span>
+        </div>
+        <button class="google-sign-in-button" id="googleSignInButton" type="button">
+          <span class="google-sign-in-mark" aria-hidden="true">G</span>
+          <span>Sign in with Google</span>
+        </button>
+      </div>
     </section>
     <div class="modal-backdrop" id="shopBackdrop" hidden></div>
     <section class="options-dialog shop-dialog" id="shopDialog" role="dialog" aria-modal="true" aria-labelledby="shopTitle" hidden>
       <div class="dialog-header">
-        <h2 id="shopTitle">Shop</h2>
+        <h2 id="shopTitle">Diamond Shop</h2>
         <button class="dialog-close" id="closeShop" type="button" aria-label="Close shop">x</button>
       </div>
-      <div class="shop-copy">Test purchases grant diamonds locally. The billing hook is isolated for Google Play later.</div>
-      <button class="shop-row" type="button" data-sku="diamonds_small">
-        <span>Handful of diamonds</span>
-        <b>80</b>
-      </button>
-      <button class="shop-row" type="button" data-sku="diamonds_medium">
-        <span>Satchel of diamonds</span>
-        <b>500</b>
-      </button>
-      <button class="shop-row" type="button" data-sku="starter_bundle">
-        <span>Starter prospect kit</span>
-        <b>160 + boost</b>
-      </button>
+      <div class="shop-balance">
+        <span>Diamond Balance</span>
+        <strong><span class="currency-icon diamond"></span><span id="shopDiamondBalance">0</span></strong>
+      </div>
+      <div class="shop-copy">Diamonds for boons and relic bargains.</div>
+      <div class="shop-list" id="shopProducts"></div>
+    </section>
+    <div class="modal-backdrop puzzle-vault-summary-backdrop" id="puzzleVaultSummaryBackdrop" hidden></div>
+    <section class="options-dialog puzzle-vault-summary-dialog" id="puzzleVaultSummaryDialog" role="dialog" aria-modal="true" aria-labelledby="puzzleVaultSummaryTitle" hidden>
+      <div class="dialog-header">
+        <h2 id="puzzleVaultSummaryTitle">You Defeated the Goblins!</h2>
+      </div>
+      <p class="puzzle-vault-summary-copy" id="puzzleVaultSummaryCopy">The portal quiets. Claim the haul you pulled from the vault.</p>
+      <div class="puzzle-vault-summary-loot" id="puzzleVaultSummaryLoot"></div>
+      <button class="puzzle-vault-return-button" id="puzzleVaultReturn" type="button">Return to Game</button>
+    </section>
+    <div class="modal-backdrop offline-loot-backdrop" id="offlineLootBackdrop" hidden></div>
+    <section class="options-dialog offline-loot-dialog" id="offlineLootDialog" role="dialog" aria-modal="true" aria-labelledby="offlineLootTitle" hidden>
+      <div class="dialog-header">
+        <h2 id="offlineLootTitle">Offline Loot</h2>
+      </div>
+      <p class="offline-loot-copy">Your offline alternate self collected the following loot while you were gone!</p>
+      <div class="offline-loot-summary" id="offlineLootSummary"></div>
+      <div class="offline-loot-list" id="offlineLootList"></div>
+      <button class="offline-loot-close" id="offlineLootClose" type="button">Cool!</button>
+    </section>
+    <div class="modal-backdrop boss-tutorial-backdrop" id="bossTutorialBackdrop" hidden></div>
+    <section class="options-dialog boss-tutorial-dialog" id="bossTutorialDialog" role="dialog" aria-modal="true" aria-labelledby="bossTutorialTitle" hidden>
+      <div class="dialog-header">
+        <h2 id="bossTutorialTitle">Boss Battle</h2>
+        <button class="dialog-close" id="closeBossTutorial" type="button" aria-label="Close boss tutorial">x</button>
+      </div>
+      <div class="boss-tutorial-badge" aria-hidden="true">
+        <span>10</span>
+      </div>
+      <p class="boss-tutorial-copy">You have reached your first boss level. Bosses appear every 10 levels and are tougher battles with special drops.</p>
+      <div class="boss-tutorial-points">
+        <article>
+          <strong>Mega Boss keys</strong>
+          <span>Bosses drop items used to challenge Mega Bosses.</span>
+        </article>
+        <article>
+          <strong>Drop rates</strong>
+          <span>Open Options to see the drop rates for all creatures.</span>
+        </article>
+        <article>
+          <strong>Goblin Vault</strong>
+          <span>There is a rare chance to spawn a portal to the Goblin Vault, with improved resource drop rates.</span>
+        </article>
+      </div>
+      <button class="boss-tutorial-action" id="bossTutorialContinue" type="button">Got it!</button>
+    </section>
+    <div class="modal-backdrop intro-backdrop" id="introBackdrop" hidden></div>
+    <section class="options-dialog intro-dialog" id="introDialog" role="dialog" aria-modal="true" aria-labelledby="introTitle" hidden>
+      <div class="intro-hero" aria-hidden="true">
+        <span class="intro-hero-creature intro-hero-moss"></span>
+        <span class="intro-hero-creature intro-hero-ember"></span>
+        <span class="intro-hero-sigil"></span>
+        <span class="intro-hero-creature intro-hero-marsh"></span>
+        <span class="intro-hero-creature intro-hero-cosmic"></span>
+      </div>
+      <div class="intro-scroll">
+        <div class="intro-heading">
+          <h2 id="introTitle">Welcome to The Judge</h2>
+          <p>Tap monsters, earn Ether, grow stronger, and push through magical realms until even the biggest bosses have to answer to your gavel.</p>
+        </div>
+        <div class="intro-shot-grid" aria-label="Game systems preview">
+          <article class="intro-shot combat">
+            <div class="intro-shot-screen">
+              <span class="intro-combat-enemy"></span>
+              <span class="intro-damage-pop intro-damage-pop-a">32</span>
+            </div>
+            <strong>Fight</strong>
+            <span>Tap the enemy to deal damage. Every defeat gives Ether for upgrades.</span>
+          </article>
+          <article class="intro-shot upgrades">
+            <div class="intro-shot-screen">
+              <span class="intro-shot-upgrade-icon"></span>
+              <span class="intro-upgrade-copy"><b>Hammer's Wrath</b><em>Raises tap damage.</em></span>
+            </div>
+            <strong>Upgrade</strong>
+            <span>Spend Ether on more tap power and automatic DPS.</span>
+          </article>
+          <article class="intro-shot loot">
+            <div class="intro-shot-screen">
+              <span class="intro-resource-grid">
+                <i class="intro-resource-soul"></i>
+                <i class="intro-resource-common"></i>
+                <i class="intro-resource-rare"></i>
+                <i class="intro-resource-epic"></i>
+                <i class="intro-resource-flame"></i>
+                <i class="intro-resource-cosmic"></i>
+                <i class="intro-resource-goblin"></i>
+                <i class="intro-resource-astral"></i>
+              </span>
+            </div>
+            <strong>Collect</strong>
+            <span>Gather dust, gems, rings, and special resources for crafting.</span>
+          </article>
+          <article class="intro-shot bosses">
+            <div class="intro-shot-screen">
+              <span class="intro-shot-mega"></span>
+              <span class="intro-shot-portal"></span>
+            </div>
+            <strong>Explore</strong>
+            <span>Beat bosses, open Puzzle Vaults, and chase bigger rewards.</span>
+          </article>
+        </div>
+        <div class="intro-goal">
+          <strong>Your goal</strong>
+          <span>Defeat each realm, unlock stronger systems, craft powerful rings, and see how far your judgment can climb.</span>
+        </div>
+        <button class="intro-start-button" id="introStartButton" type="button">Lets go!</button>
+      </div>
+    </section>
+    <div class="modal-backdrop" id="dailiesBackdrop" hidden></div>
+    <section class="options-dialog dailies-dialog" id="dailiesDialog" role="dialog" aria-modal="true" aria-labelledby="dailiesTitle" hidden>
+      <div class="dialog-header">
+        <h2 id="dailiesTitle">Daily Quests</h2>
+        <button class="dialog-close" id="closeDailies" type="button" aria-label="Close daily quests">x</button>
+      </div>
+      <div class="daily-week-card">
+        <small class="daily-week-reset-note" id="dailyWeeklyReset">Dailies reset daily at 11:59 PM. Weekly resets Sunday 11:59 PM.</small>
+        <div class="daily-week-head">
+          <span>Weekly Counter</span>
+          <strong id="dailyWeeklyCounter">0/35</strong>
+        </div>
+        <div class="daily-progress-track" aria-hidden="true">
+          <span class="daily-progress-fill" id="dailyWeeklyFill"></span>
+        </div>
+        <div class="daily-week-foot">
+          <button class="daily-week-claim" id="claimWeeklyDailies" type="button" disabled>
+            <span class="currency-icon diamond" aria-hidden="true"></span>
+            <span>Claim 500</span>
+          </button>
+        </div>
+      </div>
+      <div class="daily-quest-list" id="dailyQuestList"></div>
+    </section>
+    <div class="modal-backdrop" id="achievementsBackdrop" hidden></div>
+    <section class="options-dialog achievements-dialog" id="achievementsDialog" role="dialog" aria-modal="true" aria-labelledby="achievementsTitle" hidden>
+      <div class="dialog-header">
+        <h2 id="achievementsTitle">Achievements</h2>
+        <button class="dialog-close" id="closeAchievements" type="button" aria-label="Close achievements">x</button>
+      </div>
+      <div class="achievement-toolbar">
+        <button class="achievement-milestone-toggle-small" id="achievementMilestoneToggle" type="button" aria-label="Open milestones" aria-expanded="false" aria-controls="achievementMilestoneDialog">
+          <span class="achievement-milestone-toggle-icon" aria-hidden="true"></span>
+          <span class="achievement-milestone-toggle-label" aria-hidden="true">Milestones</span>
+        </button>
+      </div>
+      <div class="achievement-tabs" role="tablist" aria-label="Achievements sections">
+        <button class="achievement-tab active" type="button" data-achievement-tab="achievements" role="tab" aria-selected="true">Achievements</button>
+        <button class="achievement-tab" type="button" data-achievement-tab="statistics" role="tab" aria-selected="false">Statistics</button>
+      </div>
+      <div class="achievement-pane active" data-achievement-pane="achievements">
+        <div class="achievement-list" id="achievementList"></div>
+      </div>
+      <div class="achievement-pane statistics-pane" data-achievement-pane="statistics" hidden>
+        <div class="statistics-list" id="statisticsList"></div>
+      </div>
+    </section>
+    <div class="modal-backdrop achievement-milestone-backdrop" id="achievementMilestoneBackdrop" hidden></div>
+    <section class="options-dialog achievement-milestone-dialog" id="achievementMilestoneDialog" role="dialog" aria-modal="true" aria-labelledby="achievementMilestoneTitle" hidden>
+      <div class="dialog-header">
+        <h2 id="achievementMilestoneTitle">Milestones</h2>
+        <button class="dialog-close" id="closeAchievementMilestones" type="button" aria-label="Close milestones">x</button>
+      </div>
+      <div class="achievement-milestone-summary">
+        <span>Achievement Points</span>
+        <strong id="achievementMilestoneText">0 / 60</strong>
+        <div class="achievement-milestone-track" aria-hidden="true">
+          <span class="achievement-milestone-fill" id="achievementMilestoneFill"></span>
+        </div>
+      </div>
+      <div class="achievement-milestone-menu" id="achievementMilestoneMenu">
+        <div class="achievement-milestone-instruction">Tap a reward spot to inspect it</div>
+        <div class="achievement-milestone-toolbar">
+          <span class="achievement-tier-heading free">Free Tier</span>
+          <span class="achievement-tier-heading spacer" aria-hidden="true"></span>
+          <button class="achievement-diamond-tier-button" id="achievementDiamondTierButton" type="button"></button>
+        </div>
+        <div class="achievement-milestone-ladder" id="achievementMilestoneLadder"></div>
+      </div>
+    </section>
+    <div class="modal-backdrop achievement-milestone-reward-backdrop" id="achievementMilestoneRewardBackdrop" hidden></div>
+    <section class="options-dialog achievement-milestone-reward-dialog" id="achievementMilestoneRewardDialog" role="dialog" aria-modal="true" aria-labelledby="achievementMilestoneRewardTitle" hidden>
+      <div class="dialog-header">
+        <h2 id="achievementMilestoneRewardTitle">Reward</h2>
+        <button class="dialog-close" id="closeAchievementMilestoneReward" type="button" aria-label="Close milestone reward">x</button>
+      </div>
+      <div class="achievement-milestone-detail" id="achievementMilestoneDetail" hidden></div>
+    </section>
+    <div class="modal-backdrop mega-boss-backdrop" id="megaBossBackdrop" hidden></div>
+    <section class="options-dialog mega-boss-dialog" id="megaBossDialog" role="dialog" aria-modal="true" aria-labelledby="megaBossTitle" hidden>
+      <div class="dialog-header">
+        <h2 id="megaBossTitle">Mega Bosses</h2>
+        <button class="dialog-close" id="closeMegaBoss" type="button" aria-label="Close mega bosses">x</button>
+      </div>
+      <div class="mega-boss-layout">
+        <div class="mega-boss-heading-slot" id="megaBossHeadingSlot"></div>
+        <div class="mega-boss-stage">
+          <button class="mega-boss-flee-button" id="megaBossFlee" type="button" hidden>Flee</button>
+          <button class="mega-boss-stage-rewards" id="megaBossStageRewards" type="button" aria-label="View mega boss rewards" title="Rewards">
+            <span class="mega-boss-stage-rewards-icon" aria-hidden="true"></span>
+            <span class="mega-boss-stage-rewards-label">Rewards</span>
+          </button>
+          <div class="mega-boss-stage-traits" id="megaBossStageTraits" aria-label="Mega boss damage traits"></div>
+          <div class="mega-boss-stage-timer" id="megaBossStageTimer" aria-label="Mega boss timer">
+            <span class="mega-boss-clock-icon" aria-hidden="true"></span>
+            <strong id="megaBossStageTimerText">0:00</strong>
+          </div>
+          <div class="mega-boss-health">
+            <div class="mega-boss-health-fill" id="megaBossHealthFill"></div>
+            <span id="megaBossHealthText"></span>
+          </div>
+          <canvas id="megaBossCanvas" width="720" height="520" aria-label="Mega boss arena"></canvas>
+          <div class="mega-boss-status" id="megaBossStatus"></div>
+        </div>
+        <div class="mega-boss-list" id="megaBossList"></div>
+      </div>
+      <div class="mega-boss-topbar">
+        <div class="mega-boss-ring-panel">
+          <button class="mega-boss-ring-slot empty" id="megaBossRingSlot" type="button" aria-label="Ring slot">
+            <span class="ring-slot-empty-icon" aria-hidden="true"></span>
+              <span>
+                <strong>Ring</strong>
+              </span>
+          </button>
+          <button class="ring-inventory-open" id="openRingInventory" type="button">
+            <span class="ring-inventory-button-icon" aria-hidden="true"></span>
+            <span>Ring Inventory</span>
+          </button>
+        </div>
+        <button class="mega-boss-crafting-open" id="openMegaBossCrafting" type="button" aria-label="Open crafting" title="Open Crafting">
+          <span class="mega-boss-crafting-icon" aria-hidden="true"></span>
+          <span>Crafting</span>
+        </button>
+        <div class="mega-boss-wallet">
+          <span>Scrolls</span>
+          <strong><span class="currency-icon scroll"></span><span id="megaBossScrolls">x0</span></strong>
+        </div>
+      </div>
+    </section>
+    <div class="modal-backdrop mega-boss-walkthrough-backdrop" id="megaBossWalkthroughBackdrop" hidden></div>
+    <section class="options-dialog mega-boss-walkthrough-dialog" id="megaBossWalkthroughDialog" role="dialog" aria-modal="true" aria-labelledby="megaBossWalkthroughTitle" hidden>
+      <div class="dialog-header">
+        <h2 id="megaBossWalkthroughTitle">Mega Boss Walkthrough</h2>
+        <button class="dialog-close" id="closeMegaBossWalkthrough" type="button" aria-label="Close mega boss walkthrough">x</button>
+      </div>
+      <div class="mega-boss-walkthrough-step">
+        <span class="mega-boss-walkthrough-count" id="megaBossWalkthroughCount">1 / 4</span>
+        <h3 id="megaBossWalkthroughHeading">Boss Scrolls</h3>
+        <p id="megaBossWalkthroughCopy">Normal bosses from level 60 onward drop scrolls used for Mega Boss attempts.</p>
+      </div>
+      <div class="mega-boss-walkthrough-actions">
+        <button class="item-cancel-button" id="megaBossWalkthroughBack" type="button">Back</button>
+        <button class="item-equip-button" id="megaBossWalkthroughNext" type="button">Next</button>
+      </div>
+    </section>
+    <div class="modal-backdrop ring-inventory-backdrop" id="ringInventoryBackdrop" hidden></div>
+    <section class="options-dialog ring-inventory-dialog" id="ringInventoryDialog" role="dialog" aria-modal="true" aria-labelledby="ringInventoryTitle" hidden>
+      <div class="dialog-header">
+        <h2 id="ringInventoryTitle">Ring Inventory</h2>
+        <button class="dialog-close" id="closeRingInventory" type="button" aria-label="Close ring inventory">x</button>
+      </div>
+      <div class="ring-equipped-summary" id="ringEquippedSummary"></div>
+      <div class="ring-inventory-grid" id="ringInventoryGrid" aria-label="Ring inventory slots"></div>
+    </section>
+    <div class="modal-backdrop ring-detail-backdrop" id="ringDetailBackdrop" hidden></div>
+    <section class="options-dialog ring-detail-dialog" id="ringDetailDialog" role="dialog" aria-modal="true" aria-label="Ring details" hidden>
+      <div class="item-detail-body ring-detail-body">
+        <span class="ring-detail-icon" id="ringDetailIcon" aria-hidden="true"></span>
+        <div class="item-detail-info ring-detail-info">
+          <strong id="ringDetailName">Ring</strong>
+          <span class="item-detail-quality" id="ringDetailType">Physical Damage</span>
+          <span class="item-detail-divider" aria-hidden="true"></span>
+          <p id="ringDetailStats">+0% damage</p>
+          <small id="ringDetailFlavor">A crafted ring.</small>
+        </div>
+      </div>
+      <div class="item-detail-actions">
+        <button class="item-equip-button" id="ringDetailAction" type="button">Equip</button>
+        <button class="item-destroy-button" id="ringDetailDisenchant" type="button">Disenchant</button>
+        <button class="item-cancel-button" id="cancelRingDetail" type="button">Nevermind</button>
+      </div>
+    </section>
+    <div class="modal-backdrop mega-boss-rewards-backdrop" id="megaBossRewardsBackdrop" hidden></div>
+    <section class="options-dialog mega-boss-rewards-dialog" id="megaBossRewardsDialog" role="dialog" aria-modal="true" aria-labelledby="megaBossRewardsTitle" hidden>
+      <div class="dialog-header">
+        <h2 id="megaBossRewardsTitle">Rewards from this Mega Boss:</h2>
+        <button class="dialog-close" id="closeMegaBossRewards" type="button" aria-label="Close mega boss rewards">x</button>
+      </div>
+      <div class="mega-boss-rewards-body" id="megaBossRewardsBody"></div>
+    </section>
+    <div class="modal-backdrop" id="devBackdrop" hidden></div>
+    <section class="options-dialog dev-dialog" id="devDialog" role="dialog" aria-modal="true" aria-labelledby="devTitle" hidden>
+      <div class="dialog-header">
+        <h2 id="devTitle">Developer Tools</h2>
+        <button class="dialog-close" id="closeDev" type="button" aria-label="Close developer tools">x</button>
+      </div>
+      <button class="dev-reset" id="devResetProgress" type="button">Reset Everything</button>
+      <div class="dev-tool-grid">
+        <label class="dev-field" for="devEtherAmount">
+          <span>Add Ether</span>
+          <input id="devEtherAmount" type="number" min="0" step="1" inputmode="decimal" placeholder="Amount" />
+        </label>
+        <button class="dev-action" id="devAddEther" type="button">Add</button>
+        <label class="dev-field" for="devSparkAmount">
+          <span>Add Sparks</span>
+          <input id="devSparkAmount" type="number" min="0" step="1" inputmode="decimal" placeholder="Amount" />
+        </label>
+        <button class="dev-action" id="devAddSparks" type="button">Add</button>
+        <label class="dev-field" for="devDiamondAmount">
+          <span>Add Diamonds</span>
+          <input id="devDiamondAmount" type="number" min="0" step="1" inputmode="decimal" placeholder="Amount" />
+        </label>
+        <button class="dev-action" id="devAddDiamonds" type="button">Add</button>
+        <label class="dev-field" for="devScrollAmount">
+          <span>Add Scrolls</span>
+          <input id="devScrollAmount" type="number" min="0" step="1" inputmode="numeric" placeholder="Amount" />
+        </label>
+        <button class="dev-action" id="devAddScrolls" type="button">Add</button>
+        <label class="dev-field" for="devDamageValue">
+          <span>Set Damage</span>
+          <input id="devDamageValue" type="number" min="0" step="1" inputmode="decimal" placeholder="Current damage" />
+        </label>
+        <button class="dev-action" id="devSetDamage" type="button">Set</button>
+        <label class="dev-field" for="devDpsValue">
+          <span>Set DPS</span>
+          <input id="devDpsValue" type="number" min="0" step="1" inputmode="decimal" placeholder="Current DPS" />
+        </label>
+        <button class="dev-action" id="devSetDps" type="button">Set</button>
+        <label class="dev-field" for="devLevelValue">
+          <span>Jump to Level</span>
+          <input id="devLevelValue" type="number" min="1" step="1" inputmode="numeric" placeholder="Level" />
+        </label>
+        <button class="dev-action" id="devGoLevel" type="button">Go</button>
+      </div>
+      <button class="dev-clear" id="devClearOverrides" type="button">Clear Damage and DPS Overrides</button>
     </section>
     <div class="modal-backdrop" id="rebornBackdrop" hidden></div>
     <section class="options-dialog reborn-dialog" id="rebornDialog" role="dialog" aria-modal="true" aria-labelledby="rebornTitle" hidden>
@@ -177,6 +760,7 @@
       <div class="reborn-payout">
         <span>You will receive</span>
         <strong><span class="currency-icon spark"></span><span id="rebornRewardValue">0 Reborn Sparks</span></strong>
+        <small class="reborn-formula" id="rebornRewardFormula">Next Reborn: 0 sparks</small>
       </div>
       <div class="reborn-actions">
         <button class="reborn-confirm" id="confirmReborn" type="button">Sure!</button>
@@ -187,10 +771,6 @@
     <section class="options-dialog inventory-dialog" id="inventoryDialog" role="dialog" aria-modal="true" aria-labelledby="inventoryTitle" hidden>
       <div class="dialog-header">
         <h2 id="inventoryTitle">Inventory</h2>
-        <div class="inventory-tabs" role="tablist" aria-label="Inventory views">
-          <button class="inventory-tab active" id="gearInventoryTab" type="button" data-inventory-view="gear" role="tab" aria-selected="true">Gear</button>
-          <button class="inventory-tab" id="resourcesInventoryTab" type="button" data-inventory-view="resources" role="tab" aria-selected="false">Resources</button>
-        </div>
         <button class="dialog-close" id="closeInventory" type="button" aria-label="Close inventory">x</button>
       </div>
       <section class="inventory-view active" id="gearInventoryView" data-inventory-panel="gear">
@@ -206,9 +786,30 @@
         </div>
         <div class="inventory-grid" id="inventoryGrid" aria-label="Inventory slots"></div>
       </section>
-      <section class="inventory-view resources-view" id="resourcesInventoryView" data-inventory-panel="resources" hidden>
-        <div class="resources-grid" id="resourcesGrid" aria-label="Crafting resources"></div>
-      </section>
+    </section>
+    <div class="modal-backdrop" id="craftingBackdrop" hidden></div>
+    <section class="options-dialog crafting-dialog" id="craftingDialog" role="dialog" aria-modal="true" aria-labelledby="craftingTitle" hidden>
+      <div class="dialog-header">
+        <h2 id="craftingTitle">Crafting</h2>
+        <button class="dialog-close" id="closeCrafting" type="button" aria-label="Close crafting">x</button>
+      </div>
+      <div class="crafting-body">
+        <section class="crafting-resources-panel" aria-label="Crafting resources">
+          <div class="crafting-panel-heading">Resources</div>
+          <div class="resources-grid crafting-resources-grid" id="craftingResourcesGrid" aria-label="Crafting resources"></div>
+        </section>
+        <section class="crafting-recipes-panel" aria-label="Craftable items">
+          <div class="crafting-list" id="craftingList" aria-label="Crafting recipes"></div>
+        </section>
+      </div>
+    </section>
+    <div class="modal-backdrop crafting-materials-backdrop" id="craftingMaterialsBackdrop" hidden></div>
+    <section class="options-dialog crafting-materials-dialog" id="craftingMaterialsDialog" role="dialog" aria-modal="true" aria-labelledby="craftingMaterialsTitle" hidden>
+      <div class="dialog-header">
+        <h2 id="craftingMaterialsTitle">Required Materials</h2>
+        <button class="dialog-close" id="closeCraftingMaterials" type="button" aria-label="Close required materials">x</button>
+      </div>
+      <div class="crafting-materials-body" id="craftingMaterialsBody"></div>
     </section>
     <div class="modal-backdrop full-bag-backdrop" id="fullBagBackdrop" hidden></div>
     <section class="options-dialog full-bag-dialog" id="fullBagDialog" role="dialog" aria-modal="true" aria-labelledby="fullBagTitle" hidden>
@@ -246,6 +847,7 @@
         <h2 id="massDisenchantConfirmTitle">Are You Sure?</h2>
       </div>
       <p class="mass-disenchant-copy" id="massDisenchantConfirmText">Do you want to disenchant these items?</p>
+      <div class="mass-disenchant-rewards" id="massDisenchantRewards" hidden></div>
       <div class="item-detail-actions">
         <button class="item-destroy-button" id="performMassDisenchant" type="button">Yes</button>
         <button class="item-cancel-button" id="cancelMassDisenchantConfirm" type="button">Nevermind</button>
@@ -272,6 +874,6 @@
     </section>
     <div class="item-tooltip" id="itemTooltip" hidden></div>
     <audio id="bgMusic" preload="auto" loop></audio>
-    <script src="src/game.js" type="module"></script>
+    <script src="src/game.js?v=444" type="module"></script>
   </body>
 </html>

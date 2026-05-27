@@ -1,7 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Tribunal Inquisition</string>
-    <string name="title_activity_main">Tribunal Inquisition</string>
+    <string name="app_name">The Judge</string>
+    <string name="title_activity_main">The Judge</string>
     <string name="package_name">com.monty.nuggetrealms</string>
     <string name="custom_url_scheme">com.monty.nuggetrealms</string>
+    <string name="game_services_project_id" translatable="false">0000000000</string>
 </resources>
