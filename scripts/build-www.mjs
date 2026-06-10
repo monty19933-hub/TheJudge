@@ -8,6 +8,8 @@ const entries = [
   "src",
   "index.html",
   "manifest.webmanifest",
+  "privacy-policy.html",
+  "support.html",
   "styles.css",
   "sw.js"
 ];
